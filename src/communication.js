@@ -45,6 +45,16 @@ export function getHotel(hotelId) {
   return request(`/hotels/${hotelId}`);
 }
 
+// Create a pending property for the authenticated hotel owner.
+export function createOwnedHotel(payload) {
+  return request('/hotel/properties', { method: 'POST', body: JSON.stringify(payload) });
+}
+
+// Fetch all properties owned by the authenticated hotel user.
+export function getOwnedProperties() {
+  return request('/hotel/properties');
+}
+
 // Create a booking for the authenticated user.
 export function createBooking(payload) {
   return request('/bookings', { method: 'POST', body: JSON.stringify(payload) });
@@ -77,9 +87,29 @@ export function updateHotelDetails(payload) {
   return request('/hotel/details', { method: 'PUT', body: JSON.stringify(payload) });
 }
 
+// Delete a room from a hotel owned by the authenticated hotel user.
+export function deleteRoom(roomId) {
+  return request(`/hotel/rooms/${roomId}`, { method: 'DELETE' });
+}
+
+// Update image metadata for an owned hotel image.
+export function updateOwnedImage(imageId, payload) {
+  return request(`/hotel/images/${imageId}`, { method: 'PUT', body: JSON.stringify(payload) });
+}
+
+// Delete an image from an owned hotel.
+export function deleteOwnedImage(imageId) {
+  return request(`/hotel/images/${imageId}`, { method: 'DELETE' });
+}
+
 // Create a hotel as an administrator.
 export function createHotel(payload) {
   return request('/admin/hotels', { method: 'POST', body: JSON.stringify(payload) });
+}
+
+// Fetch all users and their properties as an administrator.
+export function getAdminUsers() {
+  return request('/admin/users');
 }
 
 // Delete a hotel as an administrator.
@@ -87,9 +117,41 @@ export function deleteHotel(hotelId) {
   return request(`/admin/hotels/${hotelId}`, { method: 'DELETE' });
 }
 
+// Update any hotel as an administrator.
+export function adminUpdateHotel(hotelId, payload) {
+  return request(`/admin/hotels/${hotelId}`, { method: 'PUT', body: JSON.stringify(payload) });
+}
+
+// Create a room for any hotel as an administrator.
+export function adminCreateRoom(payload) {
+  return request('/admin/rooms', { method: 'POST', body: JSON.stringify(payload) });
+}
+
+// Update any room as an administrator.
+export function adminUpdateRoom(roomId, payload) {
+  return request(`/admin/rooms/${roomId}`, { method: 'PUT', body: JSON.stringify(payload) });
+}
+
+// Delete any room as an administrator.
+export function adminDeleteRoom(roomId) {
+  return request(`/admin/rooms/${roomId}`, { method: 'DELETE' });
+}
+
 // Update a gallery image as an administrator.
 export function updateGalleryImage(payload) {
   return request('/admin/gallery', { method: 'PUT', body: JSON.stringify(payload) });
+}
+
+// Upload an image for any hotel as an administrator.
+export function adminUploadImage(payload) {
+  const formData = new FormData();
+  Object.entries(payload).forEach(([key, value]) => formData.append(key, value));
+  return request('/admin/gallery', { method: 'POST', body: formData });
+}
+
+// Delete any gallery or room image as an administrator.
+export function adminDeleteImage(imageId) {
+  return request(`/admin/gallery/${imageId}`, { method: 'DELETE' });
 }
 
 export { API_BASE_URL };
